@@ -1,5 +1,5 @@
 {
-    "name": "binafy/laravel-cart",
+    "name": "matthijs-nl/laravel-cart",
     "description": "Laravel Cart is a customizable package for adding shopping cart functionality to Laravel applications",
     "keywords": [
         "binafy",
@@ -24,6 +24,10 @@
     "minimum-stability": "stable",
     "homepage": "https://github.com/binafy/laravel-cart",
     "authors": [
+        {
+            "name": "Matthijs",
+            "email": "matthijs@cause81.nl"
+        },
         {
             "name": "milwad-dev",
             "email": "milwad.dev@gmail.com",

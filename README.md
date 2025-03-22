@@ -59,7 +59,7 @@ The `Laravel Cart` package is an ideal choice for developers looking to implemen
 You can install the package with Composer:
 
 ```bash
-composer require binafy/laravel-cart
+composer require matthijs-nl/laravel-cart
 ```
 
 <a name="publish"></a>
@@ -144,7 +144,7 @@ For storing a new cart, you can use `Cart` model:
 ```php
 use \Binafy\LaravelCart\Models\Cart;
 
-$cart = Cart::query()->firstOrCreate(['user_id' => $user->id]);
+$cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
 ```
 
 <a name="access-itemable"></a>
@@ -210,7 +210,7 @@ $items = [
     ],
 ];
 
-$cart = Cart::query()->firstOrCreate(['user_id' => $user->id]);
+$cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
 $cart->storeItems($items);
 ```
 
@@ -220,7 +220,7 @@ $cart->storeItems($items);
 If you want to store items for cart, first you need to create a cart and attach items to cart:
 
 ```php
-$cart = Cart::query()->firstOrCreate(['user_id' => $user->id]);
+$cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
 $cartItem = new CartItem([
     'itemable_id' => $itemable->id,
     'itemable_type' => $itemable::class,
@@ -235,7 +235,7 @@ If you may to access the items of one cart, you can use `items` relation that ex
 For conveniences, you can use `storeItem` method. This method take a model or array:
 
 ```php
-$cart = Cart::query()->firstOrCreate(['user_id' => $user->id]);
+$cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
 
 // Model
 $cart->storeItem($itemable);
@@ -267,7 +267,7 @@ $items = [
     ],
 ];
 
-$cart = Cart::query()->firstOrCreate(['user_id' => $user->id]);
+$cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
 $cart->removeItem($product1);
 ```
 
@@ -292,7 +292,7 @@ $items = [
     ],
 ];
 
-$cart = Cart::query()->firstOrCreate(['user_id' => $user->id]);
+$cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
 $cart->emptyCart();
 ```
 
