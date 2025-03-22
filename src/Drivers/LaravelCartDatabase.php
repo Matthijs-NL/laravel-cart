@@ -13,7 +13,7 @@ class LaravelCartDatabase implements Driver
      */
     public function storeItem(Model|array $item, ?int $userId = null): static
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $cart->storeItem($item);
 
         return $this;
@@ -24,7 +24,7 @@ class LaravelCartDatabase implements Driver
      */
     public function storeItems(array $items, ?int $userId = null): static
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $cart->storeItems($items);
 
         return $this;
@@ -35,7 +35,7 @@ class LaravelCartDatabase implements Driver
      */
     public function increaseQuantity(Model $item, int $quantity = 1, ?int $userId = null): static
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $item = $cart->items()->firstWhere('itemable_id', $item->getKey());
 
         if (! $item) {
@@ -52,7 +52,7 @@ class LaravelCartDatabase implements Driver
      */
     public function decreaseQuantity(Model $item, int $quantity = 1, ?int $userId = null): static
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $item = $cart->items()->firstWhere('itemable_id', $item->getKey());
 
         if (! $item) {
@@ -69,7 +69,7 @@ class LaravelCartDatabase implements Driver
      */
     public function removeItem(Model $item, ?int $userId = null): static
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $itemToDelete = $cart->items()->find($item->getKey());
         $itemToDelete?->delete();
 
@@ -81,7 +81,7 @@ class LaravelCartDatabase implements Driver
      */
     public function emptyCart(?int $userId = null): static
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $cart->emptyCart();
 
         return $this;
@@ -92,7 +92,7 @@ class LaravelCartDatabase implements Driver
      */
     public function getOption(string $option, ?int $itemId = null, ?int $userId = null): mixed
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $items = $cart->items()->when(! is_null($itemId), function (Builder $builder) use ($itemId) {
             $builder->where('id', $itemId);
         });
@@ -105,7 +105,7 @@ class LaravelCartDatabase implements Driver
      */
     public function getOptions(?int $itemId = null, ?int $userId = null): mixed
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $items = $cart->items()->when(! is_null($itemId), function (Builder $builder) use ($itemId) {
             $builder->where('id', $itemId);
         });
@@ -118,7 +118,7 @@ class LaravelCartDatabase implements Driver
      */
     public function setOption(string $key, mixed $value, ?int $itemId = null, ?int $userId = null): static
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $items = $cart->items()->when(! is_null($itemId), function (Builder $builder) use ($itemId) {
             $builder->where('id', $itemId);
         });
@@ -133,7 +133,7 @@ class LaravelCartDatabase implements Driver
      */
     public function addOption(string $key, mixed $value, ?int $itemId = null, ?int $userId = null): static
     {
-        $cart = Cart::query()->firstOrCreate(['user_id' => $this->resolveUserId($userId)]);
+        $cart = Cart::query()->firstOrCreate([config('laravel-cart.users.foreign_id', 'customer_id') => $this->resolveUserId($userId)]);
         $items = $cart->items()->when(! is_null($itemId), function (Builder $builder) use ($itemId) {
             $builder->where('id', $itemId);
         });
@@ -148,6 +148,6 @@ class LaravelCartDatabase implements Driver
      */
     protected function resolveUserId(?int $userId): int
     {
-        return $userId ?? auth()->id();
+        return $userId ?? auth(config('laravel-cart.guard'))->id();
     }
 }

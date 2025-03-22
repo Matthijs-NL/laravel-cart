@@ -18,7 +18,7 @@ class Cart extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['user_id'];
+    protected $fillable = ['customer_id'];
 
     /**
      * The relations to eager load on every query.
@@ -56,16 +56,16 @@ class Cart extends Model
         Builder $query,
         Model $item,
         int $quantity = 1,
-        ?int $userId = null
+        ?int $customerId = null
     ): Builder {
-        if (is_null($userId)) {
-            $userId = auth()->id();
+        if (is_null($customerId)) {
+            $customerId = auth(config('laravel-cart.guard'))->id();
         }
         if (! $item instanceof Cartable) {
             throw new \Exception('The item must be an instance of Cartable');
         }
 
-        $cart = $query->firstOrCreate(['user_id' => $userId]);
+        $cart = $query->firstOrCreate(['customer_id' => $customerId]);
         $cartItem = new CartItem([
             'itemable_id' => $item->getKey(),
             'itemable_type' => $item::class,

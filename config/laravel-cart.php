@@ -10,12 +10,12 @@ return [
         /*
          * The user table name.
          */
-        'table' => 'users',
+        'table' => 'customers',
 
         /*
          * The user foreign key.
          */
-        'foreign_id' => 'user_id',
+        'foreign_id' => 'customer_id',
     ],
 
     /*
@@ -53,4 +53,6 @@ return [
     'driver' => [
         'default' => 'database',
     ],
+
+    'guard' => 'customer'
 ];
