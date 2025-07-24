@@ -20,8 +20,8 @@ return new class extends Migration
 
             $table->foreignId($userForeignName)->constrained($userTableName)->cascadeOnDelete();
             $table->softDeletes();
-            $table->dateTime('completed_at')->nullable();
-            $table->dateTime('canceled_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
+            $table->timestamp('canceled_at')->nullable();
             $table->timestamps();
         });
     }
