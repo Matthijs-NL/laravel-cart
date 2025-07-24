@@ -80,6 +80,19 @@ class Cart extends Model
         return $query;
     }
 
+    public static function addItem(int $customerId, Cartable $product): Cart{
+        $cart = self::query()->firstOrCreate(['customer_id' => $customerId]);
+        $cartItem = $cart->items->first(function($item) use($product){
+            return $item->itemable_type == get_class($product) && $item->itemable_id == $product->id;
+        });
+        if(empty($cartItem) || !$cartItem->exists) {
+            $cart->storeItem($product);
+        }else{
+            $cart->increaseQuantity(item: $product);
+        }
+        return $cart;
+    }
+
     // Methods
 
     /**
