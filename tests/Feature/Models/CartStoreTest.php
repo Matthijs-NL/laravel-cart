@@ -1,9 +1,9 @@
 <?php
 
-use Binafy\LaravelCart\Cartable;
-use Binafy\LaravelCart\Events\LaravelCartStoreItemEvent;
-use Binafy\LaravelCart\Models\Cart;
-use Binafy\LaravelCart\Models\CartItem;
+use DigitalSelf\LaravelCart\Cartable;
+use DigitalSelf\LaravelCart\Events\LaravelCartStoreItemEvent;
+use DigitalSelf\LaravelCart\Models\Cart;
+use DigitalSelf\LaravelCart\Models\CartItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\SetUp\Models\Product;
 use Tests\SetUp\Models\User;

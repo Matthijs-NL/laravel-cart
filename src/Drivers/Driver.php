@@ -1,6 +1,6 @@
 <?php
 
-namespace Binafy\LaravelCart\Drivers;
+namespace DigitalSelf\LaravelCart\Drivers;
 
 use Illuminate\Database\Eloquent\Model;
 

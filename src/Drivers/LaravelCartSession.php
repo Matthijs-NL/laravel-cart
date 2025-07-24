@@ -1,8 +1,8 @@
 <?php
 
-namespace Binafy\LaravelCart\Drivers;
+namespace DigitalSelf\LaravelCart\Drivers;
 
-use Binafy\LaravelCart\Cartable;
+use DigitalSelf\LaravelCart\Cartable;
 use Illuminate\Database\Eloquent\Model;
 
 class LaravelCartSession implements Driver

@@ -80,7 +80,7 @@ php artisan vendor:publish --tag="laravel-cart-migrations"
 For convenience, you can use this command to publish config, migration, and ... files:
 
 ```shell
-php artisan vendor:publish --provider="Binafy\LaravelCart\Providers\LaravelCartServiceProvider"
+php artisan vendor:publish --provider="DigitalSelf\LaravelCart\Providers\LaravelCartServiceProvider"
 ```
 
 After publishing, run the `php artisan migrate` command.
@@ -101,7 +101,7 @@ For convenience, you can use Laravel Cart facade to store, delete, and ...:
 ```php
 <?php
 
-use Binafy\LaravelCart\LaravelCart;
+use DigitalSelf\LaravelCart\LaravelCart;
 
 LaravelCart::driver('session')->storeItem($item, $userId|null);
 LaravelCart::storeItem($item $userId|null);
@@ -115,7 +115,7 @@ If you may to using Laravel Cart facade, you can change the driver for store, de
 ```php
 <?php
 
-use Binafy\LaravelCart\LaravelCart;
+use DigitalSelf\LaravelCart\LaravelCart;
 
 LaravelCart::driver('database')->storeItem($item, $userId|null);
 LaravelCart::driver('session')->removeItem($item);
@@ -142,7 +142,7 @@ Also, you are able to use Laravel Cart models for fetch or ... with Laravel Eloq
 For storing a new cart, you can use `Cart` model:
 
 ```php
-use \Binafy\LaravelCart\Models\Cart;
+use \DigitalSelf\LaravelCart\Models\Cart;
 
 $cart = Cart::query()->firstOrCreate(['customer_id' => $customer->id]);
 ```
@@ -168,7 +168,7 @@ $cartItem->itemable()->first(); // Return Model Instance
 > For storing an item for cart, you need to implement `Cartable` interface to your model.
 
 ```php
-use Binafy\LaravelCart\Cartable;
+use DigitalSelf\LaravelCart\Cartable;
 
 class Product extends Model implements Cartable
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Binafy\LaravelCart\Manager;
+namespace DigitalSelf\LaravelCart\Manager;
 
-use Binafy\LaravelCart\Drivers\LaravelCartDatabase;
-use Binafy\LaravelCart\Drivers\LaravelCartSession;
+use DigitalSelf\LaravelCart\Drivers\LaravelCartDatabase;
+use DigitalSelf\LaravelCart\Drivers\LaravelCartSession;
 use Illuminate\Support\Manager;
 
 class LaravelCartManager extends Manager

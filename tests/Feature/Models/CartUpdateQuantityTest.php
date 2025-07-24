@@ -1,9 +1,9 @@
 <?php
 
-use Binafy\LaravelCart\Events\LaravelCartDecreaseQuantityEvent;
-use Binafy\LaravelCart\Events\LaravelCartIncreaseQuantityEvent;
-use Binafy\LaravelCart\Models\Cart;
-use Binafy\LaravelCart\Models\CartItem;
+use DigitalSelf\LaravelCart\Events\LaravelCartDecreaseQuantityEvent;
+use DigitalSelf\LaravelCart\Events\LaravelCartIncreaseQuantityEvent;
+use DigitalSelf\LaravelCart\Models\Cart;
+use DigitalSelf\LaravelCart\Models\CartItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\SetUp\Models\Product;
 use Tests\SetUp\Models\User;

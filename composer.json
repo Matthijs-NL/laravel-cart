@@ -42,7 +42,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Binafy\\LaravelCart\\": "src/"
+            "DigitalSelf\\LaravelCart\\": "src/"
         }
     },
     "autoload-dev": {
@@ -73,7 +73,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Binafy\\LaravelCart\\Providers\\LaravelCartServiceProvider"
+                "DigitalSelf\\LaravelCart\\Providers\\LaravelCartServiceProvider"
             ]
         }
     }

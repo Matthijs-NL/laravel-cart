@@ -1,8 +1,8 @@
 <?php
 
-namespace Binafy\LaravelCart\Models;
+namespace DigitalSelf\LaravelCart\Models;
 
-use Binafy\LaravelCart\Observers\CartItemObserve;
+use DigitalSelf\LaravelCart\Observers\CartItemObserve;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 

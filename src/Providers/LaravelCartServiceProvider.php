@@ -1,8 +1,8 @@
 <?php
 
-namespace Binafy\LaravelCart\Providers;
+namespace DigitalSelf\LaravelCart\Providers;
 
-use Binafy\LaravelCart\Manager\LaravelCartManager;
+use DigitalSelf\LaravelCart\Manager\LaravelCartManager;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 

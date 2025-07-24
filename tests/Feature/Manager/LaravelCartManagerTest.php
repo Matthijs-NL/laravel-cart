@@ -1,6 +1,6 @@
 <?php
 
-use Binafy\LaravelCart\LaravelCart;
+use DigitalSelf\LaravelCart\LaravelCart;
 
 test('can get correct driver of laravel cart manager', function () {
     expect(LaravelCart::getDefaultDriver())->toBe(config('laravel-cart.driver.default'));

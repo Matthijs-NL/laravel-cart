@@ -1,9 +1,9 @@
 <?php
 
-namespace Binafy\LaravelCart\Observers;
+namespace DigitalSelf\LaravelCart\Observers;
 
-use Binafy\LaravelCart\Cartable;
-use Binafy\LaravelCart\Models\CartItem;
+use DigitalSelf\LaravelCart\Cartable;
+use DigitalSelf\LaravelCart\Models\CartItem;
 
 class CartItemObserve
 {

@@ -1,6 +1,6 @@
 <?php
 
-use Binafy\LaravelCart\LaravelCart;
+use DigitalSelf\LaravelCart\LaravelCart;
 use Tests\SetUp\Models\Product;
 use Tests\SetUp\Models\User;
 

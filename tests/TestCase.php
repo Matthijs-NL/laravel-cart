@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Binafy\LaravelCart\Providers\LaravelCartServiceProvider;
+use DigitalSelf\LaravelCart\Providers\LaravelCartServiceProvider;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\Artisan;
 use Tests\SetUp\Models\User;

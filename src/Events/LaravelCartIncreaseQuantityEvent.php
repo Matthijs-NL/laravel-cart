@@ -1,6 +1,6 @@
 <?php
 
-namespace Binafy\LaravelCart\Events;
+namespace DigitalSelf\LaravelCart\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;

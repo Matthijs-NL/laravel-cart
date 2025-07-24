@@ -2,7 +2,7 @@
 
 namespace Tests\SetUp\Models;
 
-use Binafy\LaravelCart\Cartable;
+use DigitalSelf\LaravelCart\Cartable;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model implements Cartable

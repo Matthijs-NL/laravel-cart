@@ -1,8 +1,8 @@
 <?php
 
-use Binafy\LaravelCart\LaravelCart;
-use Binafy\LaravelCart\Models\Cart;
-use Binafy\LaravelCart\Models\CartItem;
+use DigitalSelf\LaravelCart\LaravelCart;
+use DigitalSelf\LaravelCart\Models\Cart;
+use DigitalSelf\LaravelCart\Models\CartItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\SetUp\Models\Product;
 use Tests\SetUp\Models\User;

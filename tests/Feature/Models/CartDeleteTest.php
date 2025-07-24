@@ -1,9 +1,9 @@
 <?php
 
-use Binafy\LaravelCart\Events\LaravelCartEmptyEvent;
-use Binafy\LaravelCart\Events\LaravelCartRemoveItemEvent;
-use Binafy\LaravelCart\Events\LaravelCartStoreItemEvent;
-use Binafy\LaravelCart\Models\Cart;
+use DigitalSelf\LaravelCart\Events\LaravelCartEmptyEvent;
+use DigitalSelf\LaravelCart\Events\LaravelCartRemoveItemEvent;
+use DigitalSelf\LaravelCart\Events\LaravelCartStoreItemEvent;
+use DigitalSelf\LaravelCart\Models\Cart;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\SetUp\Models\Product;

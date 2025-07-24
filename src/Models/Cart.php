@@ -1,18 +1,20 @@
 <?php
 
-namespace Binafy\LaravelCart\Models;
+namespace DigitalSelf\LaravelCart\Models;
 
-use Binafy\LaravelCart\Cartable;
-use Binafy\LaravelCart\Events\LaravelCartDecreaseQuantityEvent;
-use Binafy\LaravelCart\Events\LaravelCartEmptyEvent;
-use Binafy\LaravelCart\Events\LaravelCartIncreaseQuantityEvent;
-use Binafy\LaravelCart\Events\LaravelCartRemoveItemEvent;
-use Binafy\LaravelCart\Events\LaravelCartStoreItemEvent;
+use DigitalSelf\LaravelCart\Cartable;
+use DigitalSelf\LaravelCart\Events\LaravelCartDecreaseQuantityEvent;
+use DigitalSelf\LaravelCart\Events\LaravelCartEmptyEvent;
+use DigitalSelf\LaravelCart\Events\LaravelCartIncreaseQuantityEvent;
+use DigitalSelf\LaravelCart\Events\LaravelCartRemoveItemEvent;
+use DigitalSelf\LaravelCart\Events\LaravelCartStoreItemEvent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cart extends Model
 {
+    use SoftDeletes;
     /**
      * Fillable columns.
      *
@@ -27,6 +29,10 @@ class Cart extends Model
      */
     protected $with = ['items'];
 
+    protected $casts = [
+        'completed_at'=>'datetime',
+        'canceled_at'=>'datetime',
+    ];
     /**
      * Create a new instance of the model.
      */

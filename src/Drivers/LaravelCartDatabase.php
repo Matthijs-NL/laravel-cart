@@ -1,8 +1,8 @@
 <?php
 
-namespace Binafy\LaravelCart\Drivers;
+namespace DigitalSelf\LaravelCart\Drivers;
 
-use Binafy\LaravelCart\Models\Cart;
+use DigitalSelf\LaravelCart\Models\Cart;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 

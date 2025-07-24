@@ -1,6 +1,6 @@
 <?php
 
-namespace Binafy\LaravelCart;
+namespace DigitalSelf\LaravelCart;
 
 interface Cartable
 {
