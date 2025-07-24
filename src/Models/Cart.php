@@ -23,7 +23,7 @@ class Cart extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['customer_id'];
+    protected $fillable = ['customer_id', 'canceled_at', 'completed_at'];
 
     /**
      * The relations to eager load on every query.
