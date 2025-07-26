@@ -17,7 +17,7 @@ class ActiveCartScope implements Scope
         $builder->whereNull('completed_at')
             ->where(function ($query) {
                 $query->whereNull('canceled_at')
-                    ->orWhere('cancel]led_at', '<', now()->subDays(3));
+                    ->orWhere('canceled_at', '<', now()->subDays(3));
             });
     }
 }
