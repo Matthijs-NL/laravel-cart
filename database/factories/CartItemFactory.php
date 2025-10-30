@@ -14,7 +14,7 @@ class CartItemFactory extends Factory
         return [
             'cart_id' => Cart::factory(),
             'quantity' => $this->faker->numberBetween(1, 10),
-            'itemable_id' => config('laravel-cart.product_model')::factory(),
+            'itemable_id' => config('laravel-cart.product_model')::factory()->create()->id,
             'itemable_type' => config('laravel-cart.product_model'),
         ];
     }
