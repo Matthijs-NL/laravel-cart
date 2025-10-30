@@ -42,7 +42,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "DigitalSelf\\LaravelCart\\": "src/"
+            "DigitalSelf\\LaravelCart\\": "src/",
+            "DigitalSelf\\LaravelCart\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {

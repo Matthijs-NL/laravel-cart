@@ -2,13 +2,20 @@
 
 namespace DigitalSelf\LaravelCart\Models;
 
+use DigitalSelf\LaravelCart\Database\Factories\CartItemFactory;
 use DigitalSelf\LaravelCart\Observers\CartItemObserve;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[ObservedBy([CartItemObserve::class])]
 class CartItem extends Model
 {
+    use HasFactory;
+
+    public static function newFactory(): CartItemFactory{
+        return CartItemFactory::new();
+    }
     /**
      * Fillable columns.
      *

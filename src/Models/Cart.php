@@ -3,6 +3,7 @@
 namespace DigitalSelf\LaravelCart\Models;
 
 use DigitalSelf\LaravelCart\Cartable;
+use DigitalSelf\LaravelCart\Database\Factories\CartFactory;
 use DigitalSelf\LaravelCart\Events\LaravelCartDecreaseQuantityEvent;
 use DigitalSelf\LaravelCart\Events\LaravelCartEmptyEvent;
 use DigitalSelf\LaravelCart\Events\LaravelCartIncreaseQuantityEvent;
@@ -10,6 +11,7 @@ use DigitalSelf\LaravelCart\Events\LaravelCartRemoveItemEvent;
 use DigitalSelf\LaravelCart\Events\LaravelCartStoreItemEvent;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use DigitalSelf\LaravelCart\Models\Scopes\ActiveCartScope;
@@ -17,7 +19,11 @@ use DigitalSelf\LaravelCart\Models\Scopes\ActiveCartScope;
 #[ScopedBy([ActiveCartScope::class])]
 class Cart extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
+
+    public static function newFactory(): CartFactory{
+        return CartFactory::new();
+    }
     /**
      * Fillable columns.
      *

@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    'product_model' => DigitalSelf\CommonPayment\Models\Product::class,
+    'customer_model' => DigitalSelf\CommonPayment\Models\Customer::class,
     /*
      * Users
      *
