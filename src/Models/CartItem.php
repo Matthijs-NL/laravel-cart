@@ -24,6 +24,13 @@ class CartItem extends Model
     protected $guarded = ['id'];
 
     /**
+     * @var string[]
+     */
+    protected $casts = [
+        'options' => 'array',
+    ];
+
+    /**
      * Create a new instance of the model.
      */
     public function __construct(array $attributes = [])
