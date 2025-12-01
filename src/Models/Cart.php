@@ -62,6 +62,10 @@ class Cart extends Model
         return $this->hasMany(CartItem::class);
     }
 
+    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo{
+        return $this->belongsTo(config('laravel-cart.customer_model'), 'customer_id');
+    }
+
     // Scopes
 
     /**
