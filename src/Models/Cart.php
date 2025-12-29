@@ -121,7 +121,11 @@ class Cart extends Model
     {
         $totalPrice = 0;
         foreach ($this->items()->get() as $item) {
-            $totalPrice += (int) $item->quantity * (float) $item->itemable->getPrice();
+            if(method_exists($item->itemable, 'getPriceByQuantity' )){
+                $totalPrice += (float) $item->itemable->getPriceByQuantity($item->quantity);
+            }else {
+                $totalPrice += (int)$item->quantity * (float)$item->itemable->getPrice();
+            }
         }
 
         return $totalPrice;
