@@ -31,7 +31,7 @@ class Cart extends Model
      *
      * @var string[]
      */
-    protected $fillable = ['customer_id', 'canceled_at', 'completed_at', 'metadata'];
+    protected $fillable = ['customer_id', 'canceled_at', 'completed_at'];
 
     /**
      * The relations to eager load on every query.
@@ -43,10 +43,6 @@ class Cart extends Model
     protected $casts = [
         'completed_at' => 'datetime',
         'canceled_at' => 'datetime',
-        // Optional per-cart attribution/marketing block. Consuming apps that
-        // want it must add a nullable json `metadata` column to their carts
-        // table; apps without the column simply never set it.
-        'metadata' => 'array',
     ];
 
     /**
