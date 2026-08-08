@@ -9,27 +9,29 @@ use DigitalSelf\LaravelCart\Events\LaravelCartEmptyEvent;
 use DigitalSelf\LaravelCart\Events\LaravelCartIncreaseQuantityEvent;
 use DigitalSelf\LaravelCart\Events\LaravelCartRemoveItemEvent;
 use DigitalSelf\LaravelCart\Events\LaravelCartStoreItemEvent;
+use DigitalSelf\LaravelCart\Models\Scopes\ActiveCartScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use DigitalSelf\LaravelCart\Models\Scopes\ActiveCartScope;
 
 #[ScopedBy([ActiveCartScope::class])]
 class Cart extends Model
 {
-    use SoftDeletes, HasFactory;
+    use HasFactory, SoftDeletes;
 
-    public static function newFactory(): CartFactory{
+    public static function newFactory(): CartFactory
+    {
         return CartFactory::new();
     }
+
     /**
      * Fillable columns.
      *
      * @var string[]
      */
-    protected $fillable = ['customer_id', 'canceled_at', 'completed_at'];
+    protected $fillable = ['customer_id', 'canceled_at', 'completed_at', 'metadata'];
 
     /**
      * The relations to eager load on every query.
@@ -39,9 +41,14 @@ class Cart extends Model
     protected $with = ['items'];
 
     protected $casts = [
-        'completed_at'=>'datetime',
-        'canceled_at'=>'datetime',
+        'completed_at' => 'datetime',
+        'canceled_at' => 'datetime',
+        // Optional per-cart attribution/marketing block. Consuming apps that
+        // want it must add a nullable json `metadata` column to their carts
+        // table; apps without the column simply never set it.
+        'metadata' => 'array',
     ];
+
     /**
      * Create a new instance of the model.
      */
@@ -62,7 +69,8 @@ class Cart extends Model
         return $this->hasMany(CartItem::class);
     }
 
-    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo{
+    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(config('laravel-cart.customer_model'), 'customer_id');
     }
 
@@ -99,16 +107,18 @@ class Cart extends Model
         return $query;
     }
 
-    public static function addItem(int $customerId, Cartable $product): Cart{
+    public static function addItem(int $customerId, Cartable $product): Cart
+    {
         $cart = self::query()->firstOrCreate(['customer_id' => $customerId]);
-        $cartItem = $cart->items->first(function($item) use($product){
+        $cartItem = $cart->items->first(function ($item) use ($product) {
             return $item->itemable_type == get_class($product) && $item->itemable_id == $product->id;
         });
-        if(empty($cartItem) || !$cartItem->exists) {
+        if (empty($cartItem) || ! $cartItem->exists) {
             $cart->storeItem($product);
-        }else{
+        } else {
             $cart->increaseQuantity(item: $product);
         }
+
         return $cart;
     }
 
@@ -121,10 +131,10 @@ class Cart extends Model
     {
         $totalPrice = 0;
         foreach ($this->items()->get() as $item) {
-            if(method_exists($item->itemable, 'getPriceByQuantity' )){
+            if (method_exists($item->itemable, 'getPriceByQuantity')) {
                 $totalPrice += (float) $item->itemable->getPriceByQuantity($item->quantity);
-            }else {
-                $totalPrice += (int)$item->quantity * (float)$item->itemable->getPrice();
+            } else {
+                $totalPrice += (int) $item->quantity * (float) $item->itemable->getPrice();
             }
         }
 
