@@ -1,5 +1,9 @@
 ChangeLog
 
+## v1.4.0 - 2026-09-09
+
+**Full Changelog**: https://github.com/Matthijs-NL/laravel-cart/compare/v1.3.0...v1.4.0
+
 ## v1.2.0 - 2025-02-25
 
 ### What's Changed
