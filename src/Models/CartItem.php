@@ -7,6 +7,8 @@ use DigitalSelf\LaravelCart\Observers\CartItemObserve;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 #[ObservedBy([CartItemObserve::class])]
 class CartItem extends Model
@@ -136,7 +138,7 @@ class CartItem extends Model
     /**
      * Relation polymorphic, inverse one-to-one or many relationship.
      */
-    public function itemable(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function itemable(): MorphTo
     {
         return $this->morphTo();
     }
@@ -144,7 +146,7 @@ class CartItem extends Model
     /**
      * Relation one-to-many, Cart model.
      */
-    public function cart(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function cart(): BelongsTo
     {
         return $this->belongsTo(Cart::class, 'cart_id');
     }

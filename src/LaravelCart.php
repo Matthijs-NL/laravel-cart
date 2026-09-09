@@ -2,6 +2,9 @@
 
 namespace DigitalSelf\LaravelCart;
 
+use DigitalSelf\LaravelCart\Manager\LaravelCartManager;
+use Illuminate\Support\Facades\Facade;
+
 /**
  * @method static \DigitalSelf\LaravelCart\Drivers\Driver driver(string|null $driver = null)
  * @method static \DigitalSelf\LaravelCart\Drivers\Driver storeItem(\Illuminate\Database\Eloquent\Model|array $item, int|null $userId = null)
@@ -17,9 +20,9 @@ namespace DigitalSelf\LaravelCart;
  * @method static string getDefaultDriver()
  * @method static void setDefaultDriver(string $name)
  *
- * @see \DigitalSelf\LaravelCart\Manager\LaravelCartManager
+ * @see LaravelCartManager
  */
-class LaravelCart extends \Illuminate\Support\Facades\Facade
+class LaravelCart extends Facade
 {
     /**
      * Get the registered name of the component.

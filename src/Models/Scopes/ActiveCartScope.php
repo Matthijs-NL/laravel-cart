@@ -1,6 +1,5 @@
 <?php
 
-
 namespace DigitalSelf\LaravelCart\Models\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;

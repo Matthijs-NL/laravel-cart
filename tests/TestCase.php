@@ -4,6 +4,7 @@ namespace Tests;
 
 use DigitalSelf\LaravelCart\Providers\LaravelCartServiceProvider;
 use Illuminate\Encryption\Encrypter;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Artisan;
 use Tests\SetUp\Models\User;
 
@@ -12,7 +13,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * Load package service provider.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      */
     protected function getPackageProviders($app): array
     {
@@ -22,7 +23,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param  Application  $app
      */
     protected function getEnvironmentSetUp($app): void
     {

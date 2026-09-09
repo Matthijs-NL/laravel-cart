@@ -10,11 +10,15 @@ use DigitalSelf\LaravelCart\Events\LaravelCartIncreaseQuantityEvent;
 use DigitalSelf\LaravelCart\Events\LaravelCartRemoveItemEvent;
 use DigitalSelf\LaravelCart\Events\LaravelCartStoreItemEvent;
 use DigitalSelf\LaravelCart\Models\Scopes\ActiveCartScope;
+use DigitalSelf\LaravelCart\QuantityPriced;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 #[ScopedBy([ActiveCartScope::class])]
 class Cart extends Model
@@ -60,12 +64,12 @@ class Cart extends Model
     /**
      * Relation one-to-many, CartItem model.
      */
-    public function items(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(CartItem::class);
     }
 
-    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(config('laravel-cart.customer_model'), 'customer_id');
     }
@@ -172,7 +176,7 @@ class Cart extends Model
      * How much of each itemable this cart holds, across every line, keyed
      * "Type:id".
      *
-     * This is the quantity a {@see \DigitalSelf\LaravelCart\QuantityPriced}
+     * This is the quantity a {@see QuantityPriced}
      * itemable is asked to price — see that interface for why it is the
      * cart-wide total. Overridden lines are left out: an agreed price is not
      * evidence of volume.
@@ -185,7 +189,7 @@ class Cart extends Model
     }
 
     /**
-     * @param  \Illuminate\Support\Collection<int, CartItem>  $items
+     * @param  Collection<int, CartItem>  $items
      * @return array<string, int>
      */
     protected function quantitiesFor($items): array
@@ -258,7 +262,7 @@ class Cart extends Model
      * earlier would answer for the cart as it was. `itemable` is eager loaded
      * because every line asks for it.
      *
-     * @return \Illuminate\Support\Collection<int, CartItem>
+     * @return Collection<int, CartItem>
      */
     protected function resolveItems()
     {

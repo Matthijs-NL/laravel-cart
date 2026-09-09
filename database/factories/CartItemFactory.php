@@ -1,4 +1,5 @@
 <?php
+
 namespace DigitalSelf\LaravelCart\Database\Factories;
 
 use DigitalSelf\LaravelCart\Models\Cart;

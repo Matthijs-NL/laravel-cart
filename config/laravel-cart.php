@@ -1,9 +1,12 @@
 <?php
 
+use DigitalSelf\CommonPayment\Models\Customer;
+use DigitalSelf\CommonPayment\Models\Product;
+
 return [
 
-    'product_model' => DigitalSelf\CommonPayment\Models\Product::class,
-    'customer_model' => DigitalSelf\CommonPayment\Models\Customer::class,
+    'product_model' => Product::class,
+    'customer_model' => Customer::class,
     /*
      * Users
      *
@@ -57,5 +60,5 @@ return [
         'default' => 'database',
     ],
 
-    'guard' => 'customer'
+    'guard' => 'customer',
 ];
