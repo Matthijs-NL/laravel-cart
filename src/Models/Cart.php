@@ -125,16 +125,144 @@ class Cart extends Model
      */
     public function calculatedPriceByQuantity(): float
     {
-        $totalPrice = 0;
-        foreach ($this->items()->get() as $item) {
-            if (method_exists($item->itemable, 'getPriceByQuantity')) {
-                $totalPrice += (float) $item->itemable->getPriceByQuantity($item->quantity);
-            } else {
-                $totalPrice += (int) $item->quantity * (float) $item->itemable->getPrice();
-            }
+        return array_sum($this->lineTotals());
+    }
+
+    /**
+     * What each line of this cart is worth, keyed by cart item id.
+     *
+     * The single definition of this cart's arithmetic, and the one callers
+     * should read. Two rules live here and nowhere else:
+     *
+     *  - a line with a {@see CartItem::priceOverride()} bills at that price;
+     *  - every other line is priced at the rate its itemable charges for the
+     *    cart's WHOLE holding of that itemable, not for this line alone.
+     *
+     * Callers needing a subtotal of SOME lines — a product-restricted coupon's
+     * eligible lines, a tickets-only subtotal — must add up these figures
+     * rather than re-deriving them from the itemables. Every re-derivation so
+     * far has ended up measuring a different cart from the one that gets
+     * charged.
+     *
+     * TAX: this cart has no idea. The figures come back in whatever basis the
+     * itemable's own methods and the override amount are written in, so a
+     * consumer that mixes the two bases within one cart gets a meaningless
+     * sum, and one that wants a specific basis has to convert. Use these for
+     * comparing a cart against itself — a coupon threshold, a discount base,
+     * an amount to charge — and derive display prices from the itemable, where
+     * the tax treatment is known.
+     *
+     * @return array<int, float>
+     */
+    public function lineTotals(): array
+    {
+        $items = $this->resolveItems();
+        $quantities = $this->quantitiesFor($items);
+
+        $totals = [];
+
+        foreach ($items as $item) {
+            $totals[$item->id] = $this->lineTotal($item, $quantities);
         }
 
-        return $totalPrice;
+        return $totals;
+    }
+
+    /**
+     * How much of each itemable this cart holds, across every line, keyed
+     * "Type:id".
+     *
+     * This is the quantity a {@see \DigitalSelf\LaravelCart\QuantityPriced}
+     * itemable is asked to price — see that interface for why it is the
+     * cart-wide total. Overridden lines are left out: an agreed price is not
+     * evidence of volume.
+     *
+     * @return array<string, int>
+     */
+    public function quantityByItemable(): array
+    {
+        return $this->quantitiesFor($this->resolveItems());
+    }
+
+    /**
+     * @param  \Illuminate\Support\Collection<int, CartItem>  $items
+     * @return array<string, int>
+     */
+    protected function quantitiesFor($items): array
+    {
+        $totals = [];
+
+        foreach ($items as $item) {
+            if ($item->hasPriceOverride()) {
+                continue;
+            }
+
+            $key = $item->itemable_type.':'.$item->itemable_id;
+            $totals[$key] = ($totals[$key] ?? 0) + (int) $item->quantity;
+        }
+
+        return $totals;
+    }
+
+    /**
+     * @param  array<string, int>  $quantities
+     */
+    protected function lineTotal(CartItem $item, array $quantities): float
+    {
+        $override = $item->priceOverride();
+
+        if ($override !== null) {
+            return $override * (int) $item->quantity;
+        }
+
+        $itemable = $item->itemable;
+
+        // A line whose itemable has been deleted underneath it is worth
+        // nothing rather than fatal: carts outlive catalogues.
+        if (! $itemable) {
+            return 0.0;
+        }
+
+        // method_exists and not instanceof QuantityPriced: the method predates
+        // the interface, and an implementor that has not declared it yet must
+        // keep working exactly as before.
+        if (! method_exists($itemable, 'getPriceByQuantity')) {
+            return (int) $item->quantity * (float) $itemable->getPrice();
+        }
+
+        $lineQuantity = (int) $item->quantity;
+        $wholeQuantity = $quantities[$item->itemable_type.':'.$item->itemable_id] ?? $lineQuantity;
+
+        // The only line of this itemable: ask for exactly this quantity and
+        // hand the answer back untouched. No division, so a single-line cart
+        // is arithmetically identical to what this method returned before
+        // cart-wide quantities existed.
+        if ($wholeQuantity === $lineQuantity) {
+            return (float) $itemable->getPriceByQuantity($lineQuantity);
+        }
+
+        // Split across lines: the itemable prices the whole holding, and this
+        // line takes its share at the same unit rate. Exact for a volume
+        // function, which is what QuantityPriced requires — a graduated one
+        // would need an allocation policy this deliberately does not invent.
+        $whole = (float) $itemable->getPriceByQuantity($wholeQuantity);
+
+        return $wholeQuantity > 0
+            ? ($whole / $wholeQuantity) * $lineQuantity
+            : 0.0;
+    }
+
+    /**
+     * Always a fresh read, matching what this class did before: callers create
+     * items and then total the cart in the same request, and a relation loaded
+     * earlier would answer for the cart as it was. `itemable` is eager loaded
+     * because every line asks for it.
+     *
+     * @return \Illuminate\Support\Collection<int, CartItem>
+     */
+    protected function resolveItems()
+    {
+        return $this->items()->with('itemable')->get();
     }
 
     /**
