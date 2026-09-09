@@ -145,3 +145,50 @@ it('prices two different itemables independently', function () {
     // flat product is untouched by the other's ladder.
     expect($cart->calculatedPriceByQuantity())->toBe(70.0);
 });
+
+it('keeps a flat product flat while a laddered one in the same cart reaches its band', function () {
+    // The mixed cart, with BOTH sides past one unit — the case where a bug
+    // would actually show. Quantity is keyed per itemable, so three of the flat
+    // product must not be read as volume for the laddered one, and the
+    // laddered one's band must not be applied to the flat one.
+    $flat = Product::query()->create(['title' => 'Flat', 'price' => 45]);
+    $ladder = LadderedProduct::query()->create(['title' => 'Ladder', 'price' => 25]);
+    $cart = cartFor();
+
+    addLine($cart, $flat, 3);
+    addLine($cart, $ladder, 2);
+
+    expect($cart->quantityByItemable())->toBe([
+        Product::class.':'.$flat->id => 3,
+        LadderedProduct::class.':'.$ladder->id => 2,
+    ]);
+
+    // 3 × €45 flat, plus 2 × €22 on the two-and-up band.
+    expect($cart->calculatedPriceByQuantity())->toBe(135.0 + 44.0);
+
+    $totals = array_values($cart->lineTotals());
+    expect($totals)->toBe([135.0, 44.0]);
+});
+
+it('splits a laddered product across lines beside a flat one without cross-contamination', function () {
+    // Same again with the laddered product spread over two lines, which is how
+    // band-sharing ticket types actually arrive: the ladder still sees 2, and
+    // the flat lines are still priced one at a time.
+    $flat = Product::query()->create(['title' => 'Flat', 'price' => 45]);
+    $ladder = LadderedProduct::query()->create(['title' => 'Ladder', 'price' => 25]);
+    $cart = cartFor();
+
+    addLine($cart, $flat, 1);
+    addLine($cart, $ladder, 1);
+    addLine($cart, $flat, 1);
+    addLine($cart, $ladder, 1);
+
+    expect($cart->quantityByItemable())->toBe([
+        Product::class.':'.$flat->id => 2,
+        LadderedProduct::class.':'.$ladder->id => 2,
+    ])
+        // €45 + €22 + €45 + €22. The flat product has no band to reach, and
+        // two of it does not discount it.
+        ->and(array_values($cart->lineTotals()))->toBe([45.0, 22.0, 45.0, 22.0])
+        ->and($cart->calculatedPriceByQuantity())->toBe(134.0);
+});
